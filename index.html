@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>NoBanks Nearby, Builds</title>
+<meta name="description" content="Everything Ryan Hammer (NoBanks Nearby) has built for hackathons: the XPRIZE Build with Gemini win, the Mantle win, and every working product shipped in days.">
+<meta property="og:title" content="NoBanks Nearby, Builds">
+<meta property="og:description" content="Working AI products built in days, judged by the companies that make the tools. Two wins, 17 entries since July 2026.">
+<meta property="og:image" content="https://build.nobanksnearby.com/img/xprize_video.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0c'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='800' font-size='30' fill='%23f4f1ea' text-anchor='middle'%3ENB%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0a0a0c; --bg2: #121216; --bg3: #19191f;
+    --fg: #f4f1ea; --fg2: #b9b5ac; --fg3: #7d7a73;
+    --line: rgba(244, 241, 234, .14); --line2: rgba(244, 241, 234, .26);
+    --gold: #e8c872; --gold-bg: rgba(232, 200, 114, .12);
+    --live: #7fd3a1; --live-bg: rgba(127, 211, 161, .10);
+    --radius: 18px;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+
+  /* top bar */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; border-bottom: 1px solid var(--line); }
+  .brand { text-decoration: none; display: flex; flex-direction: column; line-height: 1.1; }
+  .brand b { font-size: 15px; letter-spacing: .14em; font-weight: 800; }
+  .brand span { font-size: 11px; letter-spacing: .22em; color: var(--fg2); margin-top: 4px; }
+  .top nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 1px solid var(--line2); border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; background: transparent; color: var(--fg); white-space: nowrap; }
+  .pill:hover { border-color: var(--fg); }
+  .pill.solid { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .pill.small { padding: 7px 13px; font-size: 13px; }
+
+  /* hero */
+  .hero { padding-block: 72px 40px; }
+  .kicker { font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--fg2); margin: 0 0 22px; font-weight: 700; }
+  h1 { font-size: clamp(38px, 6.2vw, 72px); line-height: 1.02; letter-spacing: -.025em; font-weight: 800; margin: 0 0 24px; max-width: 16ch; text-wrap: balance; }
+  .lede { font-size: clamp(18px, 2vw, 22px); color: var(--fg2); max-width: 62ch; margin: 0 0 28px; }
+  .lede strong { color: var(--fg); font-weight: 600; }
+  .def { border-left: 2px solid var(--gold); padding: 6px 0 6px 18px; max-width: 70ch; color: var(--fg2); margin: 0 0 36px; }
+  .def b { color: var(--fg); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; max-width: 760px; }
+  .stat { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; background: var(--bg2); }
+  .stat b { display: block; font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .stat span { display: block; margin-top: 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--fg2); }
+
+  /* sections */
+  section { padding-block: 44px; border-top: 1px solid var(--line); }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 26px; }
+  h2 { font-size: clamp(26px, 3.4vw, 40px); letter-spacing: -.02em; font-weight: 800; margin: 0; line-height: 1.05; }
+  .sec-head p { margin: 0; color: var(--fg2); max-width: 60ch; }
+
+  /* wins */
+  .wins { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+  .win { position: relative; border: 1px solid var(--line2); border-radius: var(--radius); overflow: hidden; background: var(--bg2); display: flex; flex-direction: column; }
+  .win .media { aspect-ratio: 16 / 9; background: #000; position: relative; }
+  .win .media img { width: 100%; height: 100%; object-fit: cover; }
+  .win .body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line2); color: var(--fg2); width: max-content; }
+  .badge.win { color: var(--gold); border-color: rgba(232, 200, 114, .45); background: var(--gold-bg); }
+  .badge.live { color: var(--live); border-color: rgba(127, 211, 161, .4); background: var(--live-bg); }
+  .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .win h3 { margin: 0; font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -.02em; line-height: 1.08; font-weight: 800; }
+  .win .amt { font-size: clamp(34px, 4vw, 54px); font-weight: 800; letter-spacing: -.03em; line-height: 1; color: var(--gold); }
+  .win p { margin: 0; color: var(--fg2); }
+  .win .ev { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg3); font-weight: 700; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
+
+  /* play button on thumbnails */
+  .play { position: absolute; inset: 0; display: grid; place-items: center; text-decoration: none; }
+  .play::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.55)); }
+  .play .btn { position: relative; width: 66px; height: 66px; border-radius: 50%; background: rgba(244,241,234,.92); display: grid; place-items: center; box-shadow: 0 10px 40px rgba(0,0,0,.5); transition: transform .15s; }
+  .play:hover .btn { transform: scale(1.06); }
+  .play .btn svg { margin-left: 4px; }
+  .play .len { position: absolute; right: 12px; bottom: 10px; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--fg); background: rgba(0,0,0,.6); padding: 3px 8px; border-radius: 6px; }
+  .embed { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  /* build cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg2); display: flex; flex-direction: column; min-width: 0; }
+  .card .media { aspect-ratio: 16 / 9; background: #000; position: relative; }
+  .card .media img, .card .media video { width: 100%; height: 100%; object-fit: cover; }
+  .card .media video { background: #000; }
+  .card .body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .card .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .card h3 { margin: 2px 0 0; font-size: 22px; letter-spacing: -.015em; line-height: 1.15; font-weight: 800; }
+  .card p { margin: 0; color: var(--fg2); font-size: 15.5px; }
+  .card .ev { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg3); font-weight: 700; line-height: 1.5; }
+  .days { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg2); font-weight: 700; }
+  .media.paper { background: var(--bg3); display: grid; place-items: center; }
+  .paper-in { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 24px; }
+  .paper-k { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--fg3); font-weight: 700; }
+  .paper-n { font-size: 72px; font-weight: 800; letter-spacing: -.04em; line-height: 1; color: var(--fg); }
+  .paper-s { font-size: 14px; color: var(--fg2); max-width: 30ch; }
+
+  /* in progress strip */
+  .strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .strip .item { border: 1px dashed var(--line2); border-radius: 14px; padding: 16px 18px; background: transparent; }
+  .strip .item b { display: block; font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+  .strip .item span { display: block; color: var(--fg2); font-size: 14.5px; margin-top: 6px; }
+  .strip .item small { display: block; margin-top: 10px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); font-weight: 700; }
+
+  /* apps */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+  .tile { border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; text-decoration: none; background: var(--bg2); display: flex; flex-direction: column; gap: 6px; transition: border-color .15s; min-width: 0; }
+  .tile:hover { border-color: var(--fg); }
+  .tile b { font-size: 17px; font-weight: 800; letter-spacing: -.01em; }
+  .tile span { color: var(--fg2); font-size: 14.5px; }
+  .tile i { font-style: normal; font-size: 12px; color: var(--fg3); letter-spacing: .06em; margin-top: 6px; word-break: break-all; }
+
+  /* about + footer */
+  .about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: start; }
+  .about p { margin: 0 0 14px; color: var(--fg2); max-width: 62ch; }
+  .about p strong { color: var(--fg); }
+  .about ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .about li { border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; background: var(--bg2); font-size: 15px; }
+  .about li b { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--fg3); margin-bottom: 3px; }
+  footer { border-top: 1px solid var(--line); padding-block: 28px 44px; color: var(--fg3); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  footer .flinks { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  @media (max-width: 820px) {
+    .wins, .about { grid-template-columns: 1fr; }
+    .hero { padding-block: 48px 32px; }
+    .top nav .hide-m { display: none; }
+  }
+  @media (max-width: 420px) {
+    .grid { grid-template-columns: 1fr; }
+    .win .body, .card .body { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="https://nobanksnearby.com" aria-label="NoBanks Nearby home">
+      <b>NOBANKS NEARBY</b>
+      <span>BUILDS</span>
+    </a>
+    <nav>
+      <a class="pill small hide-m" href="#wins">Wins</a>
+      <a class="pill small hide-m" href="#builds">Builds</a>
+      <a class="pill small hide-m" href="#apps">Apps</a>
+      <a class="pill small solid" href="https://github.com/NoBanks" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <p class="kicker">Ryan Hammer, Apple Valley, California</p>
+      <h1>Professional cinematographer since 2008. Now I build AI products in days.</h1>
+      <p class="lede">Every build on this page is a working product that was entered into a hackathon and judged by the company that makes the tools. <strong>Won or not, each one is public proof that the thing got built.</strong></p>
+      <p class="def"><b>What a hackathon is:</b> a timed contest where companies like Google, Meta and NVIDIA give builders a deadline, usually days, and judge working products.</p>
+      <div class="stats" aria-label="Record">
+        <div class="stat"><b>$50,000</b><span>XPRIZE category win</span></div>
+        <div class="stat"><b>2</b><span>Wins</span></div>
+        <div class="stat"><b>17</b><span>Entries since July 2026</span></div>
+        <div class="stat"><b>1</b><span>Builder, solo</span></div>
+      </div>
+    </div>
+
+    <section id="wins">
+      <div class="sec-head">
+        <h2>Wins</h2>
+        <p>Judged by the sponsor. Results as published by each organizer.</p>
+      </div>
+      <div class="wins">
+        <article class="win">
+          <div class="media" data-yt="nTdM2xJJ2lM">
+            <img src="img/xprize_video.jpg" alt="NoBanks AI Listing Engine, XPRIZE Build with Gemini film" loading="eager">
+            <a class="play" href="https://youtu.be/nTdM2xJJ2lM" target="_blank" rel="noopener" aria-label="Play the XPRIZE film"><span class="btn"><svg width="26" height="26" viewBox="0 0 24 24" fill="#0a0a0c"><path d="M8 5v14l11-7z"/></svg></span><span class="len">2:00</span></a>
+          </div>
+          <div class="body">
+            <span class="badge win"><span class="dot"></span>Winner</span>
+            <div class="amt">$50,000</div>
+            <h3>NoBanks AI Listing Engine</h3>
+            <p>"Art by a Human, Business by AI." A one man art business in the high desert. I make the art. AI agents read the photos, write the listings, configure shipping, publish, and sell. Real buyers, verified payouts.</p>
+            <div class="ev">XPRIZE Build with Gemini, Entrepreneurship and Job Creation category winner (one of five). Top 100 out of about 26,000 entries.</div>
+            <div class="links">
+              <a class="pill small" href="https://youtu.be/nTdM2xJJ2lM" target="_blank" rel="noopener">Watch the film</a>
+              <a class="pill small" href="https://github.com/NoBanks/nobanks-ai-listing-engine" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://devpost.com/software/nobanks-nearby-art-by-a-human-business-by-ai" target="_blank" rel="noopener">Devpost</a>
+            </div>
+          </div>
+        </article>
+        <article class="win">
+          <div class="media">
+            <img src="img/traide.jpg" alt="TRAIDE" loading="lazy">
+          </div>
+          <div class="body">
+            <span class="badge win"><span class="dot"></span>Winner</span>
+            <div class="amt">1,000 USDT</div>
+            <h3>TRAIDE</h3>
+            <p>A non-custodial multi-chain DEX with its own AI trading agents. Entered in the Turing Test Hackathon 2026 on Mantle and took a win.</p>
+            <div class="ev">Turing Test Hackathon 2026 (Mantle)</div>
+            <div class="links">
+              <a class="pill small" href="https://traidedefi.com" target="_blank" rel="noopener">traidedefi.com</a>
+              <a class="pill small" href="https://github.com/NoBanks/traide-portfolio" target="_blank" rel="noopener">Overview</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="builds">
+      <div class="sec-head">
+        <h2>Builds</h2>
+        <p>Newest first. "In judging" means the organizer has not announced results yet. Build times are from the commit history.</p>
+      </div>
+      <div class="grid">
+
+        <article class="card">
+          <div class="media">
+            <video controls preload="none" poster="img/slate_cover.jpg" playsinline>
+              <source src="video/slate_demo.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="body">
+            <div class="meta"><span class="badge">In judging</span><span class="days">Built in 2 days</span></div>
+            <h3>SLATE</h3>
+            <p>A browser agent that does its work inside a throwaway sandbox, and every step it takes gets a signed receipt anyone can verify. Prompt injection gets caught, and you can prove it.</p>
+            <div class="ev">Vultr: Agent Rush, on lablab.ai. Nov 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://github.com/NoBanks/slate" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://slate.nohumannearby.com" target="_blank" rel="noopener">Live demo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media" data-yt="rWvFvOLHeZI">
+            <img src="img/nightride_video.jpg" alt="NIGHTRIDE demo video" loading="lazy">
+            <a class="play" href="https://youtu.be/rWvFvOLHeZI" target="_blank" rel="noopener" aria-label="Play the NIGHTRIDE video"><span class="btn"><svg width="26" height="26" viewBox="0 0 24 24" fill="#0a0a0c"><path d="M8 5v14l11-7z"/></svg></span></a>
+          </div>
+          <div class="body">
+            <div class="meta"><span class="badge">In judging</span><span class="days">Built in 4 days</span></div>
+            <h3>NIGHTRIDE</h3>
+            <p>For cyclists stranded at night. Point your phone at the bike, say what happened, and three Meta models outline the part, hear you out, and walk you through the fix. If it can't be fixed there, it gets you somewhere safe or texts your people.</p>
+            <div class="ev">Meta Global AI Developer Hackathon, Indie track. Top 10 announced Nov 9, 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://youtu.be/rWvFvOLHeZI" target="_blank" rel="noopener">Video</a>
+              <a class="pill small" href="https://github.com/NoBanks/nightride" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://nightride.nohumannearby.com" target="_blank" rel="noopener">Live demo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="img/listening_room.jpg" alt="Nearby Listening Room" loading="lazy"></div>
+          <div class="body">
+            <div class="meta"><span class="badge">Submitted</span><span class="days">Built in 3 days</span></div>
+            <h3>Nearby Listening Room</h3>
+            <p>Sit down in a late night listening room for Meta Quest. A radio host who remembers you picks the records, and you put them on with your own hands. My own catalog, no controllers.</p>
+            <div class="ev">Meta VR Start Developer Competition 2026, Entertainment. Judging from Nov 18, 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://listen.nohumannearby.com" target="_blank" rel="noopener">Open the room</a>
+              <a class="pill small" href="https://github.com/NoBanks/nearby-listening-room" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://devpost.com/software/nearby-listening-room" target="_blank" rel="noopener">Devpost</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media" data-yt="EAslRxurlgw">
+            <img src="img/papertrail_video.jpg" alt="Paper Trail demo video" loading="lazy">
+            <a class="play" href="https://youtu.be/EAslRxurlgw" target="_blank" rel="noopener" aria-label="Play the Paper Trail video"><span class="btn"><svg width="26" height="26" viewBox="0 0 24 24" fill="#0a0a0c"><path d="M8 5v14l11-7z"/></svg></span></a>
+          </div>
+          <div class="body">
+            <div class="meta"><span class="badge">In judging</span><span class="days">Built in 2 days</span></div>
+            <h3>Paper Trail</h3>
+            <p>Issue in, production out, and a signed receipt for every step. A GitLab Duo agent ships the fix; a governance gate only lets it through if the receipt chain proves the work happened.</p>
+            <div class="ev">GitLab Transcend "Life After Code". Winners around Nov 16, 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://youtu.be/EAslRxurlgw" target="_blank" rel="noopener">Video</a>
+              <a class="pill small" href="https://gitlab.com/nobanks-lab/life-after-code" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://devpost.com/software/paper-trail-r2jw1y" target="_blank" rel="noopener">Devpost</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media" data-yt="rswWuR8mJFY">
+            <img src="img/debatedesk_video.jpg" alt="Debate Desk demo video" loading="lazy">
+            <a class="play" href="https://youtu.be/rswWuR8mJFY" target="_blank" rel="noopener" aria-label="Play the Debate Desk video"><span class="btn"><svg width="26" height="26" viewBox="0 0 24 24" fill="#0a0a0c"><path d="M8 5v14l11-7z"/></svg></span></a>
+          </div>
+          <div class="body">
+            <div class="meta"><span class="badge">In judging</span><span class="days">Built in 3 days</span></div>
+            <h3>Debate Desk</h3>
+            <p>Two AI agents argue bull against bear from identical evidence, a judge rules, a deterministic risk gate sizes the trade, and the whole decision is attested on Solana in the same transaction as the trade. Every receipt replays and verifies.</p>
+            <div class="ev">BLI Legal Tech Hackathon 2, on DoraHacks. Results date not published.</div>
+            <div class="links">
+              <a class="pill small" href="https://youtu.be/rswWuR8mJFY" target="_blank" rel="noopener">Video</a>
+              <a class="pill small" href="https://github.com/NoBanks/debate-desk" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://nobanks.github.io/debate-desk/" target="_blank" rel="noopener">Live receipts</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="img/cutroom.jpg" alt="CUTROOM" loading="lazy"></div>
+          <div class="body">
+            <div class="meta"><span class="badge">In judging</span></div>
+            <h3>CUTROOM</h3>
+            <p>A virtual cutting room. NVIDIA Nemotron agents watch your footage, commit to a cut, build a real Shotcut timeline over MCP, screen it, fix it, and hand you the pickup list for tomorrow's shoot.</p>
+            <div class="ev">Nebius x NVIDIA Global AI Hackathon. Also entered in two earlier film-and-AI hackathons.</div>
+            <div class="links">
+              <a class="pill small" href="https://devpost.com/software/cutroom-igzocs" target="_blank" rel="noopener">Devpost</a>
+              <a class="pill small" href="https://github.com/NoBanks/shotcut-mcp" target="_blank" rel="noopener">shotcut-mcp</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="img/dailies_desk.jpg" alt="Dailies Desk" loading="lazy"></div>
+          <div class="body">
+            <div class="meta"><span class="badge">In judging</span><span class="days">Built in 1 day</span></div>
+            <h3>Dailies Desk</h3>
+            <p>A DIT in your NAS. Turns a shoot day of offloaded footage into a verified dailies report with backup checksums, clip specs, slate transcripts and problem flags. Footage never leaves the building.</p>
+            <div class="ev">UGREEN Hackathon 2026 on AI NAS. Top 30 announced Nov 21, 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://devpost.com/software/dailies-desk-pa2rwd" target="_blank" rel="noopener">Devpost</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="img/tastematch.jpg" alt="Taste Match" loading="lazy"></div>
+          <div class="body">
+            <div class="meta"><span class="badge">Submitted</span></div>
+            <h3>Taste Match</h3>
+            <p>An MCP server that hands any AI agent a real cultural taste graph, plus Taste Match: describe one artwork or song and get the audience who already loves it, with real places where those people go.</p>
+            <div class="ev">Agentic AI hackathon on Devpost, Oct 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://github.com/NoBanks/qloo-mcp" target="_blank" rel="noopener">Code</a>
+              <a class="pill small" href="https://devpost.com/software/taste-match-foxc81" target="_blank" rel="noopener">Devpost</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="img/shelf_paypal.jpg" alt="SHELF" loading="lazy"></div>
+          <div class="body">
+            <div class="meta"><span class="badge">Submitted</span></div>
+            <h3>SHELF</h3>
+            <p>Photos in, money out. An agent crew that sees your stuff, prices it honestly, lists it on a storefront, and closes the sale through PayPal. A human approves every listing.</p>
+            <div class="ev">PayPal AI Hackathon 2026 (judging after Nov 12). First built for All Things Agentic on Google ADK.</div>
+            <div class="links">
+              <a class="pill small" href="https://devpost.com/software/shelf-photos-in-paypal-money-out" target="_blank" rel="noopener">Devpost</a>
+              <a class="pill small" href="https://devpost.com/software/shelf-i2qxzl" target="_blank" rel="noopener">Original SHELF</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="img/donationdesk.jpg" alt="DonationDesk" loading="lazy"></div>
+          <div class="body">
+            <div class="meta"><span class="badge">Submitted</span></div>
+            <h3>DonationDesk</h3>
+            <p>Photos of donated items in, an honest priced printable sale catalog out. An intake agent for thrift shops, library book sales and rummage sales, built on AWS Strands Agents.</p>
+            <div class="ev">AWS Agents for Humans Hackathon, Good Neighbor Agents track.</div>
+            <div class="links">
+              <a class="pill small" href="https://devpost.com/software/donationdesk" target="_blank" rel="noopener">Devpost</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media paper" aria-hidden="true"><div class="paper-in"><span class="paper-k">LocBench, 129 tasks</span><span class="paper-n">74%</span><span class="paper-s">fix file in the top 3, up from 44% with the usual grep</span></div></div>
+          <div class="body">
+            <div class="meta"><span class="badge">Submitted</span></div>
+            <h3>Find the File First</h3>
+            <p>A research paper and public notebook. Small Gemma coding agents get about 30 tool calls to fix a real issue, and the first decision is which file to open. I built a benchmark for that decision and a 12-line script that gets it right 74% of the time, up from 44%.</p>
+            <div class="ev">Google Gemma 4 Developer Agent competition on Kaggle, paper track. Final Dec 2, 2026.</div>
+            <div class="links">
+              <a class="pill small" href="https://www.kaggle.com/competitions/gemma-4-developer-agent-paper/writeups/find-the-file-first-locbench-and-findfile-for-sma" target="_blank" rel="noopener">Read the paper</a>
+              <a class="pill small" href="https://www.kaggle.com/NoBanks" target="_blank" rel="noopener">Kaggle</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="now">
+      <div class="sec-head">
+        <h2>Building now</h2>
+        <p>Three entries in progress. Links appear when they are submitted.</p>
+      </div>
+      <div class="strip">
+        <div class="item"><b>DEAD AIR</b><span>An AI-DJ pirate AM station, 1714 AM, playing my own catalog with a host named Dead John and a mystery hidden between the frequencies.</span><small>Kiroween 2026, due Dec 4</small></div>
+        <div class="item"><b>Call Sheet</b><span>Paste a screenplay into Jira and an AI first assistant director breaks it down into crew tasks and a printable call sheet. A pre-production tool that supports creatives, never replaces them.</span><small>Codegeist 2026, Atlassian, due Dec 22</small></div>
+        <div class="item"><b>NIGHTRIDE Offline</b><span>The offline edition of NIGHTRIDE: on-device AI for a rider with no signal, with the cloud when there is one.</span><small>#BuildHybridAI, Firebase, due Nov 30</small></div>
+      </div>
+    </section>
+
+    <section id="apps">
+      <div class="sec-head">
+        <h2>Beyond the hackathons</h2>
+        <p>The products and infrastructure that run every day. Full lists live on the two sites below.</p>
+      </div>
+      <div class="tiles">
+        <a class="tile" href="https://nohumannearby.com" target="_blank" rel="noopener"><b>No Human Nearby</b><span>Sovereign AI products for legal, diligence and finance teams: REDLINE, DATAROOM, COVENANT. Local inference, client data stays on-prem.</span><i>nohumannearby.com</i></a>
+        <a class="tile" href="https://livingagentic.me" target="_blank" rel="noopener"><b>Living Agentic</b><span>The consumer line: MAITE, Poeta, NoCode, Mother Rucker, The AI Shortcut and more. One builder, building daily.</span><i>livingagentic.me</i></a>
+        <a class="tile" href="https://nomusicnearby.com" target="_blank" rel="noopener"><b>No Music Nearby</b><span>A direct-to-listener music vault for the NoBanks Nearby catalog, 880+ tracks, patron owned.</span><i>nomusicnearby.com</i></a>
+        <a class="tile" href="https://traidedefi.com" target="_blank" rel="noopener"><b>TRAIDE</b><span>The AI DeFi engine behind the Mantle win. Multi-chain, with its own trading agents.</span><i>traidedefi.com</i></a>
+        <a class="tile" href="https://github.com/NoBanks/ACiD" target="_blank" rel="noopener"><b>ACiD</b><span>An Ethereum L2 on the OP Stack, chain ID 1714. Testnet live, Sepolia contracts deployed.</span><i>github.com/NoBanks/ACiD</i></a>
+        <a class="tile" href="https://pypi.org/project/shotcut-mcp/" target="_blank" rel="noopener"><b>shotcut-mcp</b><span>An open-source MCP server that lets AI agents drive a real video editing timeline. On PyPI and the official MCP registry.</span><i>pypi.org/project/shotcut-mcp</i></a>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about">
+        <div>
+          <h2 style="margin-bottom:18px">Who is building this</h2>
+          <p><strong>Ryan Hammer, known as NoBanks Nearby.</strong> Professional cinematographer and post production since 2008, for brands including Samsung, the NBA, National Geographic, Red Bull, Southwest and CNN. Creative partner with the AI video labs Runway and Hailuo. Musician with 600+ released tracks.</p>
+          <p>Taught himself to code in July 2024. Since then: a growing portfolio of consumer and enterprise AI products, a 100,000+ piece on-chain art catalog, and the builds on this page, each one shipped solo in days, with AI agents as collaborators.</p>
+          <p>If you want something built, the fastest way to see how I work is to open any card above.</p>
+        </div>
+        <ul>
+          <li><b>Reel and spec ads</b><a href="https://nobanksnearby.com/hire" target="_blank" rel="noopener">nobanksnearby.com/hire</a></li>
+          <li><b>Code</b><a href="https://github.com/NoBanks" target="_blank" rel="noopener">github.com/NoBanks</a></li>
+          <li><b>Art</b><a href="https://nobanksnearby.com" target="_blank" rel="noopener">nobanksnearby.com</a></li>
+          <li><b>X</b><a href="https://x.com/nobanksnearby" target="_blank" rel="noopener">@nobanksnearby</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>NOBANKS NEARBY. Built by one human with AI agents. Updated Nov 6, 2026.</div>
+    <div class="flinks"><a href="https://nobanksnearby.com">Store</a> · <a href="https://nohumannearby.com">No Human Nearby</a> · <a href="https://livingagentic.me">Living Agentic</a></div>
+  </footer>
+</div>
+
+<script>
+  // Click a thumbnail: swap in the YouTube player in place (falls back to the link if embedding is blocked).
+  document.querySelectorAll('.media[data-yt]').forEach(function (m) {
+    var play = m.querySelector('.play');
+    if (!play) return;
+    play.addEventListener('click', function (e) {
+      e.preventDefault();
+      var id = m.getAttribute('data-yt');
+      var f = document.createElement('iframe');
+      f.className = 'embed';
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      f.title = play.getAttribute('aria-label') || 'Video';
+      m.innerHTML = '';
+      m.appendChild(f);
+    });
+  });
+</script>
+</body>
+</html>
